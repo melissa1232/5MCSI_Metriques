@@ -1,66 +1,59 @@
 <html>
   <head>
+    <meta charset="UTF-8" />
+    <title>Metrique</title>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load("current", {packages:["corechart"]});
-      google.charts.setOnLoadCallback(drawChart);
-
-      function drawChart() {
-        var weatherData = {
-          "city": {
-            "id": 2988507,
-            "name": "Paris",
-            "coord": { "lon": 2.3488, "lat": 48.8534 },
-            "country": "FR",
-            "population": 2138551,
-            "timezone": 3600
-          },
-          "cod": "200",
-          "message": 0.0408646,
-          "cnt": 16,
-          "list": [
-            {"dt": 1707739200, "temp": {"max": 283.95}},
-            {"dt": 1707825600, "temp": {"max": 283.14}},
-            {"dt": 1707912000, "temp": {"max": 287.87}},
-            {"dt": 1707998400, "temp": {"max": 289.65}},
-            {"dt": 1708084800, "temp": {"max": 287.41}},
-            {"dt": 1708171200, "temp": {"max": 288.69}},
-            {"dt": 1708257600, "temp": {"max": 287.23}},
-            {"dt": 1708344000, "temp": {"max": 287.23}},
-            {"dt": 1708430400, "temp": {"max": 283.78}},
-            {"dt": 1708516800, "temp": {"max": 283.94}},
-            {"dt": 1708603200, "temp": {"max": 284.82}},
-            {"dt": 1708689600, "temp": {"max": 284.91}},
-            {"dt": 1708776000, "temp": {"max": 285.27}},
-            {"dt": 1708862400, "temp": {"max": 281.26}},
-            {"dt": 1708948800, "temp": {"max": 280.13}},
-            {"dt": 1709035200, "temp": {"max": 280.13}}
-          ]
-        };
-
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Day');
-        data.addColumn('number', 'Temperature');
-
-        for (var i = 0; i < weatherData.list.length; i++) {
-          var date = new Date(weatherData.list[i].dt * 1000);
-          var day = date.toISOString().slice(0, 10);
-          var maxTemperature = weatherData.list[i].temp.max;
-
-          data.addRow([day, maxTemperature]);
-        }
-
-        var options = {
-          title: 'Températures à Paris pour les 16 prochains jours',
-          legend: { position: 'none' },
-        };
-
-        var chart = new google.visualization.Histogram(document.getElementById('chart_div'));
-        chart.draw(data, options);
-      }
-    </script>
   </head>
   <body>
-    <div id="chart_div" style="width: 900px; height: 500px;"></div>
+    <div id="chart_div"></div>
+  <script type="text/javascript">
+    // Charger la bibliothèque Google Charts
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      // Données de température de Paris pour les 16 prochains jours (exemple)
+      var data = google.visualization.arrayToDataTable([
+        ['Jours', 'Température (°C)'],
+        ['Jour 1', 10],
+        ['Jour 2', 12],
+        ['Jour 3', 13],
+        ['Jour 4', 15],
+        ['Jour 5', 14],
+        ['Jour 6', 16],
+        ['Jour 7', 17],
+        ['Jour 8', 18],
+        ['Jour 9', 19],
+        ['Jour 10', 20],
+        ['Jour 11', 21],
+        ['Jour 12', 22],
+        ['Jour 13', 23],
+        ['Jour 14', 22],
+        ['Jour 15', 20],
+        ['Jour 16', 19]
+      ]);
+
+      // Options du graphique
+      var options = {
+        title: 'Températures de Paris pour les 16 prochains jours',
+        legend: { position: 'none' },
+        hAxis: { title: 'Jours' },
+        vAxis: { title: 'Température (°C)' }
+      };
+
+      // Créer un nouvel histogramme
+      var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+
+      // Dessiner le graphique avec les données et les options
+      chart.draw(data, options);
+
+      // Récupération de données depuis notre API /paris/
+      fetch('/paris/')
+        .then(response => response.json())
+        .then(data => {
+          drawChart(data);
+        });
+    }
+  </script>
   </body>
 </html>
