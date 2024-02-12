@@ -1,59 +1,44 @@
 <html>
   <head>
-    <meta charset="UTF-8" />
-    <title>Metrique</title>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        // Données fournies
+        var data = google.visualization.arrayToDataTable([
+          ['Date', 'Température du Jour (°C)'],
+          [1707739200, 281.41],
+          [1707825600, 282.86],
+          [1707912000, 286.38],
+          [1707998400, 288.47],
+          [1708084800, 285.65],
+          [1708171200, 287.23],
+          [1708257600, 286.47],
+          [1708344000, 285.83],
+          [1708430400, 282.39],
+          [1708516800, 282.89],
+          [1708603200, 284.82],
+          [1708689600, 283.2],
+          [1708776000, 285.15],
+          [1708862400, 281.22],
+          [1708948800, 280.13],
+          [1709035200, 279.63]
+        ]);
+
+        var options = {
+          title: 'Températures du jour à Paris',
+          legend: { position: 'none' },
+          hAxis: { title: 'Date' },
+          vAxis: { title: 'Température (°C)' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
   </head>
   <body>
-    <div id="chart_div"></div>
-  <script type="text/javascript">
-    // Charger la bibliothèque Google Charts
-    google.charts.load('current', {'packages':['corechart']});
-    google.charts.setOnLoadCallback(drawChart);
-
-    function drawChart() {
-      // Données de température de Paris pour les 16 prochains jours (exemple)
-      var data = google.visualization.arrayToDataTable([
-        ['Jours', 'Température (°C)'],
-        ['Jour 1', 10],
-        ['Jour 2', 12],
-        ['Jour 3', 13],
-        ['Jour 4', 15],
-        ['Jour 5', 14],
-        ['Jour 6', 16],
-        ['Jour 7', 17],
-        ['Jour 8', 18],
-        ['Jour 9', 19],
-        ['Jour 10', 20],
-        ['Jour 11', 21],
-        ['Jour 12', 22],
-        ['Jour 13', 23],
-        ['Jour 14', 22],
-        ['Jour 15', 20],
-        ['Jour 16', 19]
-      ]);
-
-      // Options du graphique
-      var options = {
-        title: 'Températures de Paris pour les 16 prochains jours',
-        legend: { position: 'none' },
-        hAxis: { title: 'Jours' },
-        vAxis: { title: 'Température (°C)' }
-      };
-
-      // Créer un nouvel histogramme
-      var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-
-      // Dessiner le graphique avec les données et les options
-      chart.draw(data, options);
-
-      // Récupération de données depuis notre API /paris/
-      fetch('/paris/')
-        .then(response => response.json())
-        .then(data => {
-          drawChart(data);
-        });
-    }
-  </script>
+    <div id="chart_div" style="width: 900px; height: 500px;"></div>
   </body>
 </html>
