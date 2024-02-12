@@ -29,12 +29,12 @@
         var options = {
           title: 'Températures du jour à Paris',
           legend: { position: 'none' },
-          hAxis: { title: 'Température (°C)' },
-          vAxis: { title: 'Date' },
-          colors: ['yellow'] // Couleur jaune
+          hAxis: { title: 'Date' },
+          vAxis: { title: 'Température (°C)' },
+          colors: ['yellow'] // Ajout de la couleur jaune
         };
 
-        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
         chart.draw(data, options);
       }
     </script>
