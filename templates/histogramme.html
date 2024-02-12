@@ -12,22 +12,25 @@
           // ... Ajoutez les autres données ici
         ];
 
-        var data = [['Day', 'Temperature (°C)']];
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Day');
+        data.addColumn('number', 'Temperature (°C)');
+
         for (var i = 0; i < weatherData.length; i++) {
           var day = new Date(weatherData[i].dt * 1000);
           var temperature = weatherData[i].temp.day;
-          data.push([day.toDateString(), temperature]);
+          data.addRow([day.toDateString(), temperature]);
         }
-
-        var chartData = google.visualization.arrayToDataTable(data);
 
         var options = {
           title: 'Temperatures in Paris for the Next 16 Days',
           legend: { position: 'none' },
+          histogram: { bucketSize: 1 },
+          colors: ['#4285F4'], // Change the color as needed
         };
 
         var chart = new google.visualization.Histogram(document.getElementById('chart_div'));
-        chart.draw(chartData, options);
+        chart.draw(data, options);
       }
     </script>
   </head>
