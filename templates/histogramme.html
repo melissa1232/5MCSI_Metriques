@@ -8,29 +8,30 @@
         // Données fournies
         var data = google.visualization.arrayToDataTable([
           ['Date', 'Température du Jour (°C)'],
-          [1707739200, 281.41],
-          [1707825600, 282.86],
-          [1707912000, 286.38],
-          [1707998400, 288.47],
-          [1708084800, 285.65],
-          [1708171200, 287.23],
-          [1708257600, 286.47],
-          [1708344000, 285.83],
-          [1708430400, 282.39],
-          [1708516800, 282.89],
-          [1708603200, 284.82],
-          [1708689600, 283.2],
-          [1708776000, 285.15],
-          [1708862400, 281.22],
-          [1708948800, 280.13],
-          [1709035200, 279.63]
+          [new Date(1707739200 * 1000), 281.41],
+          [new Date(1707825600 * 1000), 282.86],
+          [new Date(1707912000 * 1000), 286.38],
+          [new Date(1707998400 * 1000), 288.47],
+          [new Date(1708084800 * 1000), 285.65],
+          [new Date(1708171200 * 1000), 287.23],
+          [new Date(1708257600 * 1000), 286.47],
+          [new Date(1708344000 * 1000), 285.83],
+          [new Date(1708430400 * 1000), 282.39],
+          [new Date(1708516800 * 1000), 282.89],
+          [new Date(1708603200 * 1000), 284.82],
+          [new Date(1708689600 * 1000), 283.2],
+          [new Date(1708776000 * 1000), 285.15],
+          [new Date(1708862400 * 1000), 281.22],
+          [new Date(1708948800 * 1000), 280.13],
+          [new Date(1709035200 * 1000), 279.63]
         ]);
 
         var options = {
           title: 'Températures du jour à Paris',
           legend: { position: 'none' },
           hAxis: { title: 'Date' },
-          vAxis: { title: 'Température (°C)' }
+          vAxis: { title: 'Température (°C)' },
+          colors: ['yellow'] // Couleur jaune
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
