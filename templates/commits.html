@@ -1,0 +1,53 @@
+from flask import Flask, render_template, jsonify
+import requests
+from datetime import datetime
+
+app = Flask(__name__)
+
+# Endpoint pour extraire les minutes d'une information formatée
+@app.route('/extract-minutes/<date_string>')
+def extract_minutes(date_string):
+    date_object = datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%SZ')
+    minutes = date_object.minute
+    return jsonify({'minutes': minutes})
+
+# Endpoint pour afficher le graphique des commits
+@app.route('/commits/')
+def commits_chart():
+    # Remplacez l'URL suivante par l'URL de votre repository forké
+    repo_url = 'https://api.github.com/repos/OpenRSI/5MCSI_Metriques/commits'
+    
+    # Effectuer une requête GET à l'API GitHub
+    response = requests.get(repo_url)
+    commits_data = response.json()
+
+    # Initialiser les listes pour stocker les minutes et le nombre de commits par minute
+    minutes_list = []
+    commits_per_minute = {}
+
+    # Parcourir les données des commits
+    for commit in commits_data:
+        commit_date = commit['commit']['author']['date']
+        minutes = extract_minutes_from_date(commit_date)
+        
+        # Mettre à jour le nombre de commits par minute
+        if minutes in commits_per_minute:
+            commits_per_minute[minutes] += 1
+        else:
+            commits_per_minute[minutes] = 1
+
+    # Convertir les données en format adapté pour le graphique (par exemple, listes de minutes et de commits)
+    minutes_list = list(commits_per_minute.keys())
+    commits_list = list(commits_per_minute.values())
+
+    # Rendre le template avec les données pour afficher le graphique
+    return render_template('commits_chart.html', minutes=minutes_list, commits=commits_list)
+
+# Fonction pour extraire les minutes d'une date formatée
+def extract_minutes_from_date(date_string):
+    date_object = datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%SZ')
+    return date_object.minute
+
+if __name__ == '__main__':
+    # Remplacez '0.0.0.0' par votre adresse IP et 5000 par le port que vous souhaitez utiliser
+    app.run(host='0.0.0.0', port=5000)
