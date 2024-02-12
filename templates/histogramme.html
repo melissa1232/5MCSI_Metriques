@@ -5,32 +5,36 @@
       google.charts.load("current", {packages:["corechart"]});
       google.charts.setOnLoadCallback(drawChart);
       function drawChart() {
+        // Données fournies
         var data = google.visualization.arrayToDataTable([
-          ['Date', 'Temperature (°C)'],
-          [new Date(1707739200 * 1000), 8.26],
-          [new Date(1707825600 * 1000), 9.71],
-          [new Date(1707912000 * 1000), 13.23],
-          [new Date(1707998400 * 1000), 15.32],
-          [new Date(1708084800 * 1000), 12.5],
-          [new Date(1708171200 * 1000), 14.08],
-          [new Date(1708257600 * 1000), 13.32],
-          [new Date(1708344000 * 1000), 12.68],
-          [new Date(1708430400 * 1000), 9.24],
-          [new Date(1708516800 * 1000), 10.74],
-          [new Date(1708603200 * 1000), 11.67],
-          [new Date(1708689600 * 1000), 10.05],
-          [new Date(1708776000 * 1000), 12.0],
-          [new Date(1708862400 * 1000), 8.07],
-          [new Date(1708948800 * 1000), 5.98],
-          [new Date(1709035200 * 1000), 6.48]
+          ['Date', 'Température du Jour (°C)'],
+          [new Date(1707739200 * 1000), 281.41],
+          [new Date(1707825600 * 1000), 282.86],
+          [new Date(1707912000 * 1000), 286.38],
+          [new Date(1707998400 * 1000), 288.47],
+          [new Date(1708084800 * 1000), 285.65],
+          [new Date(1708171200 * 1000), 287.23],
+          [new Date(1708257600 * 1000), 286.47],
+          [new Date(1708344000 * 1000), 285.83],
+          [new Date(1708430400 * 1000), 282.39],
+          [new Date(1708516800 * 1000), 282.89],
+          [new Date(1708603200 * 1000), 284.82],
+          [new Date(1708689600 * 1000), 283.2],
+          [new Date(1708776000 * 1000), 285.15],
+          [new Date(1708862400 * 1000), 281.22],
+          [new Date(1708948800 * 1000), 280.13],
+          [new Date(1709035200 * 1000), 279.63]
         ]);
 
         var options = {
-          title: 'Temperatures à Paris pour les 16 prochains jours',
+          title: 'Températures du jour à Paris',
           legend: { position: 'none' },
+          hAxis: { title: 'Date' },
+          vAxis: { title: 'Température (°C)' },
+          colors: ['yellow'] // Couleur jaune
         };
 
-        var chart = new google.visualization.Histogram(document.getElementById('chart_div'));
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
         chart.draw(data, options);
       }
     </script>
