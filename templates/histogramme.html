@@ -5,37 +5,29 @@
       google.charts.load("current", {packages:["corechart"]});
       google.charts.setOnLoadCallback(drawChart);
       function drawChart() {
-        // Données fournies
-        var data = google.visualization.arrayToDataTable([
-          ['Date', 'Température du Jour (°C)'],
-          [new Date(1707739200 * 1000), 281.41],
-          [new Date(1707825600 * 1000), 282.86],
-          [new Date(1707912000 * 1000), 286.38],
-          [new Date(1707998400 * 1000), 288.47],
-          [new Date(1708084800 * 1000), 285.65],
-          [new Date(1708171200 * 1000), 287.23],
-          [new Date(1708257600 * 1000), 286.47],
-          [new Date(1708344000 * 1000), 285.83],
-          [new Date(1708430400 * 1000), 282.39],
-          [new Date(1708516800 * 1000), 282.89],
-          [new Date(1708603200 * 1000), 284.82],
-          [new Date(1708689600 * 1000), 283.2],
-          [new Date(1708776000 * 1000), 285.15],
-          [new Date(1708862400 * 1000), 281.22],
-          [new Date(1708948800 * 1000), 280.13],
-          [new Date(1709035200 * 1000), 279.63]
-        ]);
+        var weatherData = [
+          {"dt":1707739200,"sunrise":1707721514,"sunset":1707757477,"temp":{"day":8.26,"min":5.83,"max":10.8,"night":6.44,"eve":8.6,"morn":5.01},"feels_like":{"day":7.1,"night":5.13,"eve":8.43,"morn":4.78},"pressure":1007,"humidity":79,"weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10d"}],"speed":3.41,"deg":246,"gust":8.42,"clouds":90,"pop":0.27,"rain":0.12},
+          {"dt":1707825600,"sunrise":1707807814,"sunset":1707843977,"temp":{"day":9.71,"min":4.21,"max":9.99,"night":9.65,"eve":9.37,"morn":4.33},"feels_like":{"day":7.41,"night":6.99,"eve":6.73,"morn":2.33},"pressure":1020,"humidity":67,"weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10d"}],"speed":5.45,"deg":206,"gust":13.85,"clouds":63,"pop":0.48,"rain":0.49},
+          {"dt":1707912000,"sunrise":1707894113,"sunset":1707930477,"temp":{"day":13.23,"min":9.68,"max":14.72,"night":11.83,"eve":13.19,"morn":9.98},"feels_like":{"day":12.67,"night":11.44,"eve":12.63,"morn":7.77},"pressure":1020,"humidity":79,"weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10d"}],"speed":5.26,"deg":208,"gust":13.61,"clouds":100,"pop":0.24,"rain":0.14},
+          // ... Ajoutez les autres données ici
+        ];
+
+        var data = [['Day', 'Temperature (°C)']];
+        for (var i = 0; i < weatherData.length; i++) {
+          var day = new Date(weatherData[i].dt * 1000);
+          var temperature = weatherData[i].temp.day;
+          data.push([day.toDateString(), temperature]);
+        }
+
+        var chartData = google.visualization.arrayToDataTable(data);
 
         var options = {
-          title: 'Températures du jour à Paris',
+          title: 'Temperatures in Paris for the Next 16 Days',
           legend: { position: 'none' },
-          hAxis: { title: 'Date' },
-          vAxis: { title: 'Température (°C)' },
-          colors: ['yellow'] // Couleur jaune
         };
 
-        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
+        var chart = new google.visualization.Histogram(document.getElementById('chart_div'));
+        chart.draw(chartData, options);
       }
     </script>
   </head>
