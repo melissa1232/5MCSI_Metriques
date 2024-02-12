@@ -1,53 +1,43 @@
-from flask import Flask, render_template, jsonify
-import requests
-from datetime import datetime
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commits Chart</title>
+    <!-- Inclure les liens vers les bibliothèques JavaScript pour le graphique -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Utiliser une balise canvas pour dessiner le graphique -->
+    <canvas id="commitsChart" width="400" height="200"></canvas>
 
-app = Flask(__name__)
+    <script>
+        // Récupérer les données depuis Flask et les convertir en format compatible avec Chart.js
+        var minutes = {{ minutes | tojson | safe }};
+        var commits = {{ commits | tojson | safe }};
 
-# Endpoint pour extraire les minutes d'une information formatée
-@app.route('/extract-minutes/')
-def extract_minutes(date_string):
-    date_object = datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%SZ')
-    minutes = date_object.minute
-    return jsonify({'minutes': minutes})
-
-# Endpoint pour afficher le graphique des commits
-@app.route('/commits/')
-def commits_chart():
-    # Remplacez l'URL suivante par l'URL de votre repository forké
-    repo_url = 'https://api.github.com/repos/OpenRSI/5MCSI_Metriques/commits'
-    
-    # Effectuer une requête GET à l'API GitHub
-    response = requests.get(repo_url)
-    commits_data = response.json()
-
-    # Initialiser les listes pour stocker les minutes et le nombre de commits par minute
-    minutes_list = []
-    commits_per_minute = {}
-
-    # Parcourir les données des commits
-    for commit in commits_data:
-        commit_date = commit['commit']['author']['date']
-        minutes = extract_minutes_from_date(commit_date)
-        
-        # Mettre à jour le nombre de commits par minute
-        if minutes in commits_per_minute:
-            commits_per_minute[minutes] += 1
-        else:
-            commits_per_minute[minutes] = 1
-
-    # Convertir les données en format adapté pour le graphique (par exemple, listes de minutes et de commits)
-    minutes_list = list(commits_per_minute.keys())
-    commits_list = list(commits_per_minute.values())
-
-    # Rendre le template avec les données pour afficher le graphique
-    return render_template('commits_chart.html', minutes=minutes_list, commits=commits_list)
-
-# Fonction pour extraire les minutes d'une date formatée
-def extract_minutes_from_date(date_string):
-    date_object = datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%SZ')
-    return date_object.minute
-
-if __name__ == '__main__':
-    # Remplacez '0.0.0.0' par votre adresse IP et 5000 par le port que vous souhaitez utiliser
-    app.run(host='0.0.0.0', port=5000)
+        // Créer le graphique en utilisant Chart.js
+        var ctx = document.getElementById('commitsChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: minutes,
+                datasets: [{
+                    label: 'Commits par minute',
+                    data: commits,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
