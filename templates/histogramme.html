@@ -19,17 +19,16 @@
         for (var i = 0; i < weatherData.length; i++) {
           var day = new Date(weatherData[i].dt * 1000);
           var temperature = weatherData[i].temp.day;
-          data.addRow([day.toDateString(), temperature]);
+          data.addRow([day.toLocaleDateString(), temperature]);
         }
 
         var options = {
           title: 'Temperatures in Paris for the Next 16 Days',
           legend: { position: 'none' },
-          histogram: { bucketSize: 1 },
           colors: ['#4285F4'], // Change the color as needed
         };
 
-        var chart = new google.visualization.Histogram(document.getElementById('chart_div'));
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
         chart.draw(data, options);
       }
     </script>
